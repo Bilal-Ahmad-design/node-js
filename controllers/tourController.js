@@ -73,7 +73,7 @@ exports.updateTour = async (req, res) => {
     });
   }
 };
-
+//git
 exports.deleteTour = async (req, res) => {
   try {
     await Tour.findByIdAndDelete(req.params.id);
