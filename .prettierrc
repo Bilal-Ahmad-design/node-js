@@ -8,7 +8,7 @@
   "editor.wordWrap": "on",
   "editor.trimAutoWhitespace": false,
   "eslint.run": "onSave",
-
+  "singleQuote": true,
   "workbench.colorCustomizations": {
     "statusBar.background": "#333333",
     "statusBar.noFolderBackground": "#333333",

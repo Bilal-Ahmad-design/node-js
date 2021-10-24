@@ -1,11 +1,18 @@
-const mongoose = require("mongoose");
+//creating our own middleware function and adding it to the middleware stack😜 to 🎉 🥵 😎
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
-const dotenv = require("dotenv");
-const app = require("./app");
-dotenv.config({ path: "./config.env" });
+process.on('uncaughtException', (err) => {
+  console.log(err.name, err.message);
+  console.log('uncaught EXCEPTION :-( shutting down...');
+  process.exit(1);
+});
+
+dotenv.config({ path: './config.env' });
+const app = require('./app');
 
 const DB = process.env.DATABASE.replace(
-  "<PASSWORD>",
+  '<PASSWORD>',
   process.env.DATABASE_PASSWORD
 );
 
@@ -13,18 +20,23 @@ mongoose
   .connect(DB, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useFindAndModify: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
   })
-  .then((con) => {
-    // console.log(con.connections);
-    console.log("DB connections succesfull...");
-  })
-  .catch((err) => {
-    console.log(err.message);
+  .then(() => {
+    console.log(`DB connection successfull...🖥`);
   });
 
-//----------creating a server
+//  4) START SERVER
 const port = process.env.PORT || 8000;
-app.listen(port, () => {
-  console.log(`App running on port: ${port}...`);
+const server = app.listen(port, () => {
+  console.log(`App running on port ${port}`);
+});
+
+process.on('unhandledRejection', (err) => {
+  console.log(err.name, err.message);
+  console.log('Unhadled rejection :-( shutting down...');
+  server.close(() => {
+    process.exit(1);
+  });
 });
